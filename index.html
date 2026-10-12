@@ -115,19 +115,19 @@
         /* Khung hiển thị hình minh họa bài tập */
         .exercise-img-container {
             width: 100%;
-            background: #282828;
+            background: #252525;
             border-radius: 8px;
             margin-bottom: 12px;
-            padding: 10px;
+            padding: 8px;
             display: flex;
             justify-content: center;
             align-items: center;
-            border: 1px solid #383838;
+            border: 1px solid #333;
         }
 
         .exercise-svg {
             width: 100%;
-            max-height: 120px;
+            max-height: 110px;
             display: block;
         }
 
@@ -216,23 +216,54 @@
     </div>
 
     <script>
-        // Sơ đồ SVG tư thế bài tập nhúng trực tiếp (Không lo lỗi mạng/CORS)
-        const SVG_GRAPHICS = {
-            chest_press: `<svg class="exercise-svg" viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="80" rx="6" fill="#1e1e1e"/><path d="M40 55 L160 55" stroke="#ff9800" stroke-width="4"/><rect x="80" y="50" width="40" height="10" rx="3" fill="#ff9800"/><circle cx="100" cy="40" r="8" fill="#fff"/><path d="M100 48 L100 55 M90 55 L110 55" stroke="#fff" stroke-width="3"/><path d="M60 25 L140 25" stroke="#4caf50" stroke-width="5"/><rect x="55" y="18" width="10" height="14" rx="2" fill="#4caf50"/><rect x="135" y="18" width="10" height="14" rx="2" fill="#4caf50"/><text x="100" y="72" font-size="10" fill="#b0b0b0" text-anchor="middle">CHEST PRESS / BENCH PRESS</text></svg>`,
-            pull_row: `<svg class="exercise-svg" viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="80" rx="6" fill="#1e1e1e"/><circle cx="70" cy="25" r="8" fill="#fff"/><path d="M70 33 L85 55 L105 55" stroke="#fff" stroke-width="3" fill="none"/><path d="M100 20 L100 60" stroke="#ff9800" stroke-width="5"/><rect x="95" y="15" width="10" height="12" rx="2" fill="#ff9800"/><rect x="95" y="53" width="10" height="12" rx="2" fill="#ff9800"/><path d="M75 42 L98 42" stroke="#4caf50" stroke-width="3" stroke-dasharray="3,3"/><text x="100" y="72" font-size="10" fill="#b0b0b0" text-anchor="middle">ROW / PULL MOVEMENT</text></svg>`,
-            overhead_press: `<svg class="exercise-svg" viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="80" rx="6" fill="#1e1e1e"/><circle cx="100" cy="30" r="8" fill="#fff"/><path d="M100 38 L100 65 M90 65 L100 50 L110 65" stroke="#fff" stroke-width="3" fill="none"/><path d="M60 15 L140 15" stroke="#ff9800" stroke-width="4"/><rect x="55" y="10" width="10" height="10" fill="#ff9800"/><rect x="135" y="10" width="10" height="10" fill="#ff9800"/><text x="100" y="75" font-size="10" fill="#b0b0b0" text-anchor="middle">OVERHEAD PRESS (OHP)</text></svg>`,
-            squat_leg: `<svg class="exercise-svg" viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="80" rx="6" fill="#1e1e1e"/><circle cx="100" cy="20" r="8" fill="#fff"/><path d="M100 28 L100 45 L85 62 M100 45 L115 62" stroke="#fff" stroke-width="4" fill="none"/><path d="M75 25 L125 25" stroke="#ff9800" stroke-width="5"/><rect x="70" y="18" width="10" height="14" fill="#ff9800"/><rect x="120" y="18" width="10" height="14" fill="#ff9800"/><text x="100" y="75" font-size="10" fill="#b0b0b0" text-anchor="middle">SQUAT / LEG PRESS</text></svg>`,
-            deadlift: `<svg class="exercise-svg" viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="80" rx="6" fill="#1e1e1e"/><path d="M30 62 L170 62" stroke="#555" stroke-width="2"/><circle cx="85" cy="25" r="8" fill="#fff"/><path d="M85 33 L95 50 L95 62 M95 50 L110 62" stroke="#fff" stroke-width="3" fill="none"/><path d="M70 52 L130 52" stroke="#ff9800" stroke-width="4"/><rect x="65" y="44" width="10" height="16" fill="#ff9800"/><rect x="125" y="44" width="10" height="16" fill="#ff9800"/><text x="100" y="75" font-size="10" fill="#b0b0b0" text-anchor="middle">DEADLIFT MOVEMENT</text></svg>`,
-            arm_abs: `<svg class="exercise-svg" viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="80" rx="6" fill="#1e1e1e"/><circle cx="100" cy="25" r="8" fill="#fff"/><path d="M100 33 L100 58 M92 58 L108 58" stroke="#fff" stroke-width="3"/><path d="M100 40 L115 30 L115 22" stroke="#4caf50" stroke-width="3" fill="none"/><circle cx="115" cy="20" r="5" fill="#ff9800"/><text x="100" y="75" font-size="10" fill="#b0b0b0" text-anchor="middle">CURL / TRICEPS / ABS</text></svg>`
+        // Sơ đồ SVG tư thế bài tập phủ 100% tất cả động tác
+        const SVG_MAP = {
+            // Ngực
+            bench_press: `<svg class="exercise-svg" viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="80" rx="6" fill="#1e1e1e"/><path d="M40 55 L160 55" stroke="#ff9800" stroke-width="4"/><circle cx="100" cy="40" r="8" fill="#fff"/><path d="M60 25 L140 25" stroke="#4caf50" stroke-width="5"/><rect x="55" y="18" width="10" height="14" rx="2" fill="#4caf50"/><rect x="135" y="18" width="10" height="14" rx="2" fill="#4caf50"/><text x="100" y="72" font-size="10" fill="#b0b0b0" text-anchor="middle">BARBELL BENCH PRESS</text></svg>`,
+            incline_press: `<svg class="exercise-svg" viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="80" rx="6" fill="#1e1e1e"/><path d="M50 65 L130 35" stroke="#ff9800" stroke-width="4"/><circle cx="90" cy="35" r="8" fill="#fff"/><path d="M60 20 L130 50" stroke="#4caf50" stroke-width="5"/><text x="100" y="72" font-size="10" fill="#b0b0b0" text-anchor="middle">INCLINE BENCH PRESS</text></svg>`,
+            flys: `<svg class="exercise-svg" viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="80" rx="6" fill="#1e1e1e"/><circle cx="100" cy="40" r="8" fill="#fff"/><path d="M50 30 Q100 15 150 30" stroke="#ff9800" stroke-width="4" fill="none"/><circle cx="50" cy="30" r="6" fill="#4caf50"/><circle cx="150" cy="30" r="6" fill="#4caf50"/><text x="100" y="72" font-size="10" fill="#b0b0b0" text-anchor="middle">BUTTERFLY / DB FLYS</text></svg>`,
+            
+            // Lưng
+            row: `<svg class="exercise-svg" viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="80" rx="6" fill="#1e1e1e"/><circle cx="70" cy="25" r="8" fill="#fff"/><path d="M70 33 L85 55 L105 55" stroke="#fff" stroke-width="3" fill="none"/><path d="M100 20 L100 60" stroke="#ff9800" stroke-width="5"/><text x="100" y="72" font-size="10" fill="#b0b0b0" text-anchor="middle">PENDLAY / DB ROW</text></svg>`,
+            pullup: `<svg class="exercise-svg" viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="80" rx="6" fill="#1e1e1e"/><path d="M40 15 L160 15" stroke="#ff9800" stroke-width="4"/><circle cx="100" cy="30" r="8" fill="#fff"/><path d="M100 38 L100 60 M90 60 L110 60" stroke="#fff" stroke-width="3"/><text x="100" y="72" font-size="10" fill="#b0b0b0" text-anchor="middle">PULL UP / LAT PULL DOWN</text></svg>`,
+            
+            // Vai & Cầu vai
+            ohp: `<svg class="exercise-svg" viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="80" rx="6" fill="#1e1e1e"/><circle cx="100" cy="32" r="8" fill="#fff"/><path d="M100 40 L100 65" stroke="#fff" stroke-width="3"/><path d="M60 15 L140 15" stroke="#ff9800" stroke-width="4"/><text x="100" y="75" font-size="10" fill="#b0b0b0" text-anchor="middle">OHP (MILITARY PRESS)</text></svg>`,
+            lateral_raise: `<svg class="exercise-svg" viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="80" rx="6" fill="#1e1e1e"/><circle cx="100" cy="25" r="8" fill="#fff"/><path d="M50 40 L100 35 L150 40" stroke="#ff9800" stroke-width="4" fill="none"/><text x="100" y="72" font-size="10" fill="#b0b0b0" text-anchor="middle">BENT OVER LATERAL RAISE</text></svg>`,
+            shrug: `<svg class="exercise-svg" viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="80" rx="6" fill="#1e1e1e"/><circle cx="100" cy="22" r="8" fill="#fff"/><path d="M85 30 L100 38 L115 30" stroke="#ff9800" stroke-width="4" fill="none"/><text x="100" y="72" font-size="10" fill="#b0b0b0" text-anchor="middle">DB SHRUG</text></svg>`,
+            
+            // Tay (Biceps / Triceps)
+            curl: `<svg class="exercise-svg" viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="80" rx="6" fill="#1e1e1e"/><circle cx="100" cy="25" r="8" fill="#fff"/><path d="M100 33 L100 58 M92 58 L108 58" stroke="#fff" stroke-width="3"/><path d="M100 40 L115 30 L115 22" stroke="#4caf50" stroke-width="4" fill="none"/><text x="100" y="72" font-size="10" fill="#b0b0b0" text-anchor="middle">BARBELL / DB CURL</text></svg>`,
+            triceps: `<svg class="exercise-svg" viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="80" rx="6" fill="#1e1e1e"/><circle cx="100" cy="35" r="8" fill="#fff"/><path d="M50 55 L150 55" stroke="#ff9800" stroke-width="4"/><path d="M100 25 L120 20" stroke="#4caf50" stroke-width="4"/><text x="100" y="72" font-size="10" fill="#b0b0b0" text-anchor="middle">SKULL CRUSHER / CLOSE BENCH / DIPS</text></svg>`,
+
+            // Chân (Legs)
+            squat: `<svg class="exercise-svg" viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="80" rx="6" fill="#1e1e1e"/><circle cx="100" cy="20" r="8" fill="#fff"/><path d="M100 28 L100 45 L85 62 M100 45 L115 62" stroke="#fff" stroke-width="4" fill="none"/><path d="M75 25 L125 25" stroke="#ff9800" stroke-width="5"/><text x="100" y="75" font-size="10" fill="#b0b0b0" text-anchor="middle">SQUAT / LEG PRESS</text></svg>`,
+            deadlift: `<svg class="exercise-svg" viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="80" rx="6" fill="#1e1e1e"/><circle cx="85" cy="25" r="8" fill="#fff"/><path d="M85 33 L95 50 L95 62 M95 50 L110 62" stroke="#fff" stroke-width="3" fill="none"/><path d="M70 52 L130 52" stroke="#ff9800" stroke-width="4"/><text x="100" y="75" font-size="10" fill="#b0b0b0" text-anchor="middle">SUMO / STIFF LEG DEADLIFT</text></svg>`,
+            lunges: `<svg class="exercise-svg" viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="80" rx="6" fill="#1e1e1e"/><circle cx="90" cy="22" r="8" fill="#fff"/><path d="M90 30 L90 48 L70 65 M90 48 L115 65" stroke="#fff" stroke-width="4" fill="none"/><text x="100" y="75" font-size="10" fill="#b0b0b0" text-anchor="middle">LUNGES MOVEMENT</text></svg>`,
+            calf_raise: `<svg class="exercise-svg" viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="80" rx="6" fill="#1e1e1e"/><circle cx="100" cy="20" r="8" fill="#fff"/><path d="M100 28 L100 50 M95 62 L100 50 L105 62" stroke="#fff" stroke-width="3"/><path d="M80 62 L120 62" stroke="#ff9800" stroke-width="3"/><text x="100" y="75" font-size="10" fill="#b0b0b0" text-anchor="middle">STANDING CALF RAISE</text></svg>`,
+
+            // Bụng (Abs)
+            abs: `<svg class="exercise-svg" viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="80" rx="6" fill="#1e1e1e"/><circle cx="70" cy="35" r="8" fill="#fff"/><path d="M78 35 Q100 45 130 30" stroke="#ff9800" stroke-width="4" fill="none"/><text x="100" y="72" font-size="10" fill="#b0b0b0" text-anchor="middle">ABS (CRUNCHES / LEG RAISE)</text></svg>`
         };
 
         function getExerciseSVG(name) {
-            if (name.includes("Bench") || name.includes("Fly") || name.includes("Butterfly")) return SVG_GRAPHICS.chest_press;
-            if (name.includes("Row") || name.includes("Pull")) return SVG_GRAPHICS.pull_row;
-            if (name.includes("OHP") || name.includes("Press") || name.includes("Raise")) return SVG_GRAPHICS.overhead_press;
-            if (name.includes("Squat") || name.includes("Leg Press") || name.includes("Lunge") || name.includes("Calf")) return SVG_GRAPHICS.squat_leg;
-            if (name.includes("Deadlift")) return SVG_GRAPHICS.deadlift;
-            return SVG_GRAPHICS.arm_abs;
+            const n = name.toLowerCase();
+            if (n.includes("incline")) return SVG_MAP.incline_press;
+            if (n.includes("bench press")) return SVG_MAP.bench_press;
+            if (n.includes("butterfly") || n.includes("flys")) return SVG_MAP.flys;
+            if (n.includes("row")) return SVG_MAP.row;
+            if (n.includes("pull")) return SVG_MAP.pullup;
+            if (n.includes("ohp") || n.includes("military")) return SVG_MAP.ohp;
+            if (n.includes("lateral raise")) return SVG_MAP.lateral_raise;
+            if (n.includes("shrug")) return SVG_MAP.shrug;
+            if (n.includes("curl")) return SVG_MAP.curl;
+            if (n.includes("close grip") || n.includes("skull") || n.includes("dips")) return SVG_MAP.triceps;
+            if (n.includes("squat") || n.includes("leg press")) return SVG_MAP.squat;
+            if (n.includes("deadlift")) return SVG_MAP.deadlift;
+            if (n.includes("lunge")) return SVG_MAP.lunges;
+            if (n.includes("calf")) return SVG_MAP.calf_raise;
+            if (n.includes("abs") || n.includes("crunch") || n.includes("raise")) return SVG_MAP.abs;
+            return SVG_MAP.bench_press;
         }
 
         const cycleProgram = [
