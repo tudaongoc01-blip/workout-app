@@ -93,7 +93,7 @@
             background: var(--card-bg);
             border-radius: 12px;
             padding: 12px;
-            margin-bottom: 12px;
+            margin-bottom: 14px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.3);
             width: 100%;
         }
@@ -110,6 +110,27 @@
             font-size: 0.8rem;
             color: var(--text-secondary);
             margin-bottom: 10px;
+        }
+
+        /* Khung hiển thị ảnh minh họa bài tập */
+        .exercise-img-container {
+            width: 100%;
+            background: #2a2a2a;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .exercise-img {
+            width: 100%;
+            max-height: 220px;
+            object-fit: contain;
+            display: block;
+            border-radius: 8px;
+            background-color: #fff; /* Nền trắng hỗ trợ ảnh sơ đồ */
         }
 
         .set-row {
@@ -197,6 +218,37 @@
     </div>
 
     <script>
+        // Link ảnh minh họa chuẩn từng bài tập
+        const EXERCISE_IMAGES = {
+            "BB Bench Press": "https://raw.githubusercontent.com/tudaongoc01-blip/workout-app/main/assets/bench_press.jpg",
+            "Incline DB Bench Press (Neutral Grip)": "https://www.bodybuilding.com/exercises/exerciseImages/sequences/2/Male/l/2_1.jpg",
+            "Pendlay Row (hoặc Seated Cable Row)": "https://www.bodybuilding.com/exercises/exerciseImages/sequences/4381/Male/l/4381_1.jpg",
+            "Rowing with DB": "https://www.bodybuilding.com/exercises/exerciseImages/sequences/11/Male/l/11_1.jpg",
+            "Pull Up (hoặc Lat Pull Down)": "https://www.bodybuilding.com/exercises/exerciseImages/sequences/12/Male/l/12_1.jpg",
+            "Pull Up": "https://www.bodybuilding.com/exercises/exerciseImages/sequences/12/Male/l/12_1.jpg",
+            "OHP (Military Press)": "https://www.bodybuilding.com/exercises/exerciseImages/sequences/348/Male/l/348_1.jpg",
+            "Barbell Curl": "https://www.bodybuilding.com/exercises/exerciseImages/sequences/208/Male/l/208_1.jpg",
+            "DB Curl": "https://www.bodybuilding.com/exercises/exerciseImages/sequences/177/Male/l/177_1.jpg",
+            "Close Grip Bench Press (hoặc Dips)": "https://www.bodybuilding.com/exercises/exerciseImages/sequences/28/Male/l/28_1.jpg",
+            "DB Shrug": "https://www.bodybuilding.com/exercises/exerciseImages/sequences/97/Male/l/97_1.jpg",
+            "Incline BB Bench Press": "https://www.bodybuilding.com/exercises/exerciseImages/sequences/30/Male/l/30_1.jpg",
+            "Butterfly (hoặc DB Flys)": "https://www.bodybuilding.com/exercises/exerciseImages/sequences/202/Male/l/202_1.jpg",
+            "Bent Over Lateral Raise": "https://www.bodybuilding.com/exercises/exerciseImages/sequences/378/Male/l/378_1.jpg",
+            "Skull Crusher": "https://www.bodybuilding.com/exercises/exerciseImages/sequences/342/Male/l/342_1.jpg",
+            "Squat": "https://www.bodybuilding.com/exercises/exerciseImages/sequences/41/Male/l/41_1.jpg",
+            "Leg Press": "https://www.bodybuilding.com/exercises/exerciseImages/sequences/53/Male/l/53_1.jpg",
+            "Sumo Deadlift (hoặc Conventional DL)": "https://www.bodybuilding.com/exercises/exerciseImages/sequences/138/Male/l/138_1.jpg",
+            "Sumo Deadlift": "https://www.bodybuilding.com/exercises/exerciseImages/sequences/138/Male/l/138_1.jpg",
+            "Stiff Leg Deadlift (hoặc DB RDL)": "https://www.bodybuilding.com/exercises/exerciseImages/sequences/132/Male/l/132_1.jpg",
+            "Stiff Leg Deadlift": "https://www.bodybuilding.com/exercises/exerciseImages/sequences/132/Male/l/132_1.jpg",
+            "Lunges": "https://www.bodybuilding.com/exercises/exerciseImages/sequences/60/Male/l/60_1.jpg",
+            "Standing Calf Raise": "https://www.bodybuilding.com/exercises/exerciseImages/sequences/48/Male/l/48_1.jpg",
+            "Abs 1 (Hanging / Lying Leg Raise)": "https://www.bodybuilding.com/exercises/exerciseImages/sequences/148/Male/l/148_1.jpg",
+            "Abs 1 (Leg Raises)": "https://www.bodybuilding.com/exercises/exerciseImages/sequences/148/Male/l/148_1.jpg",
+            "Abs 2 (Machine / Floor Crunches)": "https://www.bodybuilding.com/exercises/exerciseImages/sequences/164/Male/l/164_1.jpg",
+            "Abs 2 (Crunches)": "https://www.bodybuilding.com/exercises/exerciseImages/sequences/164/Male/l/164_1.jpg"
+        };
+
         const cycleProgram = [
             {
                 dayName: "Thứ 2 - Day 1",
@@ -278,9 +330,8 @@
             }
         ];
 
-        // Đặt ngày bắt đầu: 19/10/2026 (Năm, Tháng-1, Ngày)
         const START_DATE = new Date(2026, 9, 19); 
-        const TOTAL_DAYS = 84; // 3 tháng = 12 tuần = 84 ngày
+        const TOTAL_DAYS = 84;
 
         let calendarList = [];
         let selectedDateStr = "";
@@ -388,6 +439,13 @@
                 const card = document.createElement("div");
                 card.className = "exercise-card";
 
+                const imgUrl = EXERCISE_IMAGES[ex.name];
+                const imgHTML = imgUrl ? `
+                    <div class="exercise-img-container">
+                        <img class="exercise-img" src="${imgUrl}" alt="${ex.name}" loading="lazy" onerror="this.style.display='none'">
+                    </div>
+                ` : '';
+
                 let setsHTML = "";
                 for (let s = 1; s <= ex.sets; s++) {
                     const savedData = getSavedSetData(dateKey, exIdx, s);
@@ -406,6 +464,7 @@
                 card.innerHTML = `
                     <div class="exercise-title">${ex.name}</div>
                     <div class="exercise-meta">${ex.sets} Hiệp chính × Target: ${ex.reps} reps</div>
+                    ${imgHTML}
                     ${setsHTML}
                 `;
                 container.appendChild(card);
