@@ -6,8 +6,8 @@
     <title>Workout Logbook - UL Plan</title>
     
     <!-- Khai báo Icon chuẩn tên file icon.jpg -->
-    <link rel="icon" type="image/jpeg" href="icon.jpg?v=11">
-    <link rel="apple-touch-icon" href="icon.jpg?v=11">
+    <link rel="icon" type="image/jpeg" href="icon.jpg?v=12">
+    <link rel="apple-touch-icon" href="icon.jpg?v=12">
     <link rel="manifest" href="manifest.json">
 
     <style>
@@ -98,39 +98,46 @@
             width: 100%;
         }
 
+        .exercise-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 6px;
+        }
+
         .exercise-title {
             font-size: 1rem;
             font-weight: bold;
             color: var(--accent);
-            margin-bottom: 4px;
             word-break: break-word;
+            flex: 1;
+            padding-right: 8px;
+        }
+
+        .demo-btn {
+            background: #2a2a2a;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .demo-btn:active {
+            background: var(--accent);
+            color: #000;
         }
 
         .exercise-meta {
             font-size: 0.8rem;
             color: var(--text-secondary);
-            margin-bottom: 10px;
-        }
-
-        .exercise-img-container {
-            width: 100%;
-            background: #000000;
-            border-radius: 8px;
             margin-bottom: 12px;
-            overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 160px;
-            border: 1px solid #333;
-        }
-
-        .exercise-img {
-            width: 100%;
-            max-height: 230px;
-            object-fit: contain;
-            display: block;
-            background-color: #000;
         }
 
         .set-row {
@@ -218,35 +225,35 @@
     </div>
 
     <script>
-        // Đường dẫn GIF 3D mô phỏng trực tiếp từ các CDN công cộng (không bị chặn CORS)
-        const CDN_GIFS = {
-            "BB Bench Press": "https://upload.wikimedia.org/wikipedia/commons/b/b8/Bench-press-1.gif",
-            "Incline DB Bench Press (Neutral Grip)": "https://upload.wikimedia.org/wikipedia/commons/5/52/Incline-dumbbell-press-1.gif",
-            "Incline BB Bench Press": "https://upload.wikimedia.org/wikipedia/commons/b/b8/Bench-press-1.gif",
-            "Butterfly (hoặc DB Flys)": "https://upload.wikimedia.org/wikipedia/commons/5/52/Incline-dumbbell-press-1.gif",
-            "Pendlay Row (hoặc Seated Cable Row)": "https://upload.wikimedia.org/wikipedia/commons/8/87/Bent-over-row-1.gif",
-            "Rowing with DB": "https://upload.wikimedia.org/wikipedia/commons/8/87/Bent-over-row-1.gif",
-            "Pull Up (hoặc Lat Pull Down)": "https://upload.wikimedia.org/wikipedia/commons/a/a2/Pull-up-1.gif",
-            "Pull Up": "https://upload.wikimedia.org/wikipedia/commons/a/a2/Pull-up-1.gif",
-            "OHP (Military Press)": "https://upload.wikimedia.org/wikipedia/commons/d/df/Overhead-press-1.gif",
-            "Bent Over Lateral Raise": "https://upload.wikimedia.org/wikipedia/commons/d/df/Overhead-press-1.gif",
-            "Barbell Curl": "https://upload.wikimedia.org/wikipedia/commons/0/03/Biceps-curl-1.gif",
-            "DB Curl": "https://upload.wikimedia.org/wikipedia/commons/0/03/Biceps-curl-1.gif",
-            "Close Grip Bench Press (hoặc Dips)": "https://upload.wikimedia.org/wikipedia/commons/b/b8/Bench-press-1.gif",
-            "Skull Crusher": "https://upload.wikimedia.org/wikipedia/commons/0/03/Biceps-curl-1.gif",
-            "DB Shrug": "https://upload.wikimedia.org/wikipedia/commons/d/df/Overhead-press-1.gif",
-            "Squat": "https://upload.wikimedia.org/wikipedia/commons/8/82/Squat-1.gif",
-            "Leg Press": "https://upload.wikimedia.org/wikipedia/commons/3/30/Leg-press-1.gif",
-            "Sumo Deadlift (hoặc Conventional DL)": "https://upload.wikimedia.org/wikipedia/commons/1/18/Deadlift-1.gif",
-            "Sumo Deadlift": "https://upload.wikimedia.org/wikipedia/commons/1/18/Deadlift-1.gif",
-            "Stiff Leg Deadlift (hoặc DB RDL)": "https://upload.wikimedia.org/wikipedia/commons/1/18/Deadlift-1.gif",
-            "Stiff Leg Deadlift": "https://upload.wikimedia.org/wikipedia/commons/1/18/Deadlift-1.gif",
-            "Lunges": "https://upload.wikimedia.org/wikipedia/commons/a/a6/Lunge-1.gif",
-            "Standing Calf Raise": "https://upload.wikimedia.org/wikipedia/commons/8/82/Squat-1.gif",
-            "Abs 1 (Hanging / Lying Leg Raise)": "https://upload.wikimedia.org/wikipedia/commons/a/a2/Pull-up-1.gif",
-            "Abs 1 (Leg Raises)": "https://upload.wikimedia.org/wikipedia/commons/a/a2/Pull-up-1.gif",
-            "Abs 2 (Machine / Floor Crunches)": "https://upload.wikimedia.org/wikipedia/commons/a/a2/Pull-up-1.gif",
-            "Abs 2 (Crunches)": "https://upload.wikimedia.org/wikipedia/commons/a/a2/Pull-up-1.gif"
+        // Đường dẫn xem Video/GIF 3D trực tiếp chất lượng cao
+        const DEMO_LINKS = {
+            "BB Bench Press": "https://fitnessprogramer.com/exercise/barbell-bench-press/",
+            "Incline DB Bench Press (Neutral Grip)": "https://fitnessprogramer.com/exercise/incline-dumbbell-press/",
+            "Incline BB Bench Press": "https://fitnessprogramer.com/exercise/incline-barbell-bench-press/",
+            "Butterfly (hoặc DB Flys)": "https://fitnessprogramer.com/exercise/pec-deck-fly/",
+            "Pendlay Row (hoặc Seated Cable Row)": "https://fitnessprogramer.com/exercise/pendlay-row/",
+            "Rowing with DB": "https://fitnessprogramer.com/exercise/dumbbell-row/",
+            "Pull Up (hoặc Lat Pull Down)": "https://fitnessprogramer.com/exercise/pull-up/",
+            "Pull Up": "https://fitnessprogramer.com/exercise/pull-up/",
+            "OHP (Military Press)": "https://fitnessprogramer.com/exercise/overhead-press/",
+            "Bent Over Lateral Raise": "https://fitnessprogramer.com/exercise/bent-over-dumbbell-rear-delt-raise/",
+            "Barbell Curl": "https://fitnessprogramer.com/exercise/barbell-curl/",
+            "DB Curl": "https://fitnessprogramer.com/exercise/dumbbell-curl/",
+            "Close Grip Bench Press (hoặc Dips)": "https://fitnessprogramer.com/exercise/close-grip-bench-press/",
+            "Skull Crusher": "https://fitnessprogramer.com/exercise/lying-triceps-extension/",
+            "DB Shrug": "https://fitnessprogramer.com/exercise/dumbbell-shrug/",
+            "Squat": "https://fitnessprogramer.com/exercise/barbell-squat/",
+            "Leg Press": "https://fitnessprogramer.com/exercise/leg-press/",
+            "Sumo Deadlift (hoặc Conventional DL)": "https://fitnessprogramer.com/exercise/barbell-sumo-deadlift/",
+            "Sumo Deadlift": "https://fitnessprogramer.com/exercise/barbell-sumo-deadlift/",
+            "Stiff Leg Deadlift (hoặc DB RDL)": "https://fitnessprogramer.com/exercise/stiff-leg-deadlift/",
+            "Stiff Leg Deadlift": "https://fitnessprogramer.com/exercise/stiff-leg-deadlift/",
+            "Lunges": "https://fitnessprogramer.com/exercise/dumbbell-lunge/",
+            "Standing Calf Raise": "https://fitnessprogramer.com/exercise/standing-calf-raise/",
+            "Abs 1 (Hanging / Lying Leg Raise)": "https://fitnessprogramer.com/exercise/hanging-leg-raise/",
+            "Abs 1 (Leg Raises)": "https://fitnessprogramer.com/exercise/hanging-leg-raise/",
+            "Abs 2 (Machine / Floor Crunches)": "https://fitnessprogramer.com/exercise/crunch/",
+            "Abs 2 (Crunches)": "https://fitnessprogramer.com/exercise/crunch/"
         };
 
         const cycleProgram = [
@@ -407,12 +414,6 @@
             }
         }
 
-        function hideImgContainer(imgElement) {
-            if (imgElement && imgElement.parentNode) {
-                imgElement.parentNode.style.display = 'none';
-            }
-        }
-
         function renderWorkout(dateKey) {
             const container = document.getElementById("workoutContainer");
             if (!container) return;
@@ -446,12 +447,7 @@
                 const card = document.createElement("div");
                 card.className = "exercise-card";
 
-                const gifUrl = CDN_GIFS[ex.name];
-                const imgHTML = gifUrl ? `
-                    <div class="exercise-img-container">
-                        <img class="exercise-img" src="${gifUrl}" alt="${ex.name}" loading="lazy" onerror="hideImgContainer(this)">
-                    </div>
-                ` : '';
+                const demoUrl = DEMO_LINKS[ex.name] || `https://www.youtube.com/results?search_query=${encodeURIComponent(ex.name + ' exercise 3d')}`;
 
                 let setsHTML = "";
                 for (let s = 1; s <= ex.sets; s++) {
@@ -469,9 +465,11 @@
                 }
 
                 card.innerHTML = `
-                    <div class="exercise-title">${ex.name}</div>
+                    <div class="exercise-header">
+                        <div class="exercise-title">${ex.name}</div>
+                        <a href="${demoUrl}" target="_blank" class="demo-btn">🎬 Xem 3D</a>
+                    </div>
                     <div class="exercise-meta">${ex.sets} Hiệp chính × Target: ${ex.reps} reps</div>
-                    ${imgHTML}
                     ${setsHTML}
                 `;
                 container.appendChild(card);
