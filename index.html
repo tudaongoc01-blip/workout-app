@@ -112,7 +112,6 @@
             margin-bottom: 10px;
         }
 
-        /* Khung hiển thị GIF động thực tế */
         .exercise-img-container {
             width: 100%;
             background: #000000;
@@ -122,13 +121,13 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 180px;
+            min-height: 160px;
             border: 1px solid #333;
         }
 
         .exercise-img {
             width: 100%;
-            max-height: 240px;
+            max-height: 220px;
             object-fit: contain;
             display: block;
             border-radius: 8px;
@@ -220,7 +219,6 @@
     </div>
 
     <script>
-        // Danh sách GIF động thực tế (người/3D thực hiện chuyển động)
         const RAW_GIFS = {
             "BB Bench Press": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Barbell-Bench-Press.gif",
             "Incline DB Bench Press (Neutral Grip)": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Incline-Dumbbell-Press.gif",
@@ -250,12 +248,6 @@
             "Abs 2 (Machine / Floor Crunches)": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Crunch.gif",
             "Abs 2 (Crunches)": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Crunch.gif"
         };
-
-        // Chuyển đường dẫn qua Proxy CDN để vượt rào Safari/iOS 100%
-        function getProxyUrl(url) {
-            if (!url) return "";
-            return "https://images.weserv.nl/?url=" + encodeURIComponent(url);
-        }
 
         const cycleProgram = [
             {
@@ -380,14 +372,19 @@
         }
 
         function initApp() {
-            generateCalendar();
-            renderDaySelector();
-            renderWorkout(selectedDateStr);
-            setTimeout(scrollToActiveBtn, 200);
+            try {
+                generateCalendar();
+                renderDaySelector();
+                renderWorkout(selectedDateStr);
+                setTimeout(scrollToActiveBtn, 200);
+            } catch (err) {
+                console.error("Init Error:", err);
+            }
         }
 
         function renderDaySelector() {
             const container = document.getElementById("daySelector");
+            if (!container) return;
             container.innerHTML = "";
 
             calendarList.forEach(item => {
@@ -406,3 +403,117 @@
                 };
                 container.appendChild(btn);
             });
+        }
+
+        function scrollToActiveBtn() {
+            const activeBtn = document.getElementById(`btn_${selectedDateStr}`);
+            if (activeBtn) {
+                activeBtn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+            }
+        }
+
+        function hideImgContainer(imgElement) {
+            if (imgElement && imgElement.parentNode) {
+                imgElement.parentNode.style.display = 'none';
+            }
+        }
+
+        function renderWorkout(dateKey) {
+            const container = document.getElementById("workoutContainer");
+            if (!container) return;
+            container.innerHTML = "";
+
+            const dayInfo = calendarList.find(item => item.dateKey === dateKey);
+            if (!dayInfo) return;
+
+            const program = dayInfo.program;
+
+            if (program.type === "rest") {
+                container.innerHTML = `
+                    <div class="rest-day">
+                        <h2 style="font-size: 1.1rem; margin-top: 0;">${dayInfo.displayLabel}</h2>
+                        <h3 style="color: var(--accent); font-size: 1rem;">${program.title}</h3>
+                        <p style="font-size: 0.9rem;">${program.message}</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const headerHTML = `
+                <div style="margin-bottom: 12px;">
+                    <h2 style="margin: 0; font-size: 1.1rem;">${dayInfo.displayLabel}</h2>
+                    <div style="color: var(--accent); font-weight: bold; font-size: 0.95rem;">${program.title}</div>
+                </div>
+            `;
+            container.innerHTML = headerHTML;
+
+            program.exercises.forEach((ex, exIdx) => {
+                const card = document.createElement("div");
+                card.className = "exercise-card";
+
+                const gifUrl = RAW_GIFS[ex.name] || "";
+                const imgHTML = gifUrl ? `
+                    <div class="exercise-img-container">
+                        <img class="exercise-img" src="${gifUrl}" alt="${ex.name}" loading="lazy" onerror="hideImgContainer(this)">
+                    </div>
+                ` : '';
+
+                let setsHTML = "";
+                for (let s = 1; s <= ex.sets; s++) {
+                    const savedData = getSavedSetData(dateKey, exIdx, s);
+                    setsHTML += `
+                        <div class="set-row">
+                            <span class="set-label">Hiệp ${s}</span>
+                            <input type="number" id="weight_${dateKey}_${exIdx}_${s}" placeholder="kg" value="${savedData.weight || ''}">
+                            <input type="number" id="reps_${dateKey}_${exIdx}_${s}" placeholder="reps" value="${savedData.reps || ''}">
+                            <button class="check-btn ${savedData.done ? 'done' : ''}" onclick="toggleCheck('${dateKey}', ${exIdx}, ${s})">
+                                ✓
+                            </button>
+                        </div>
+                    `;
+                }
+
+                card.innerHTML = `
+                    <div class="exercise-title">${ex.name}</div>
+                    <div class="exercise-meta">${ex.sets} Hiệp chính × Target: ${ex.reps} reps</div>
+                    ${imgHTML}
+                    ${setsHTML}
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function getSavedSetData(dateKey, exIdx, setNum) {
+            try {
+                const key = `workout_${dateKey}_${exIdx}_${setNum}`;
+                const data = localStorage.getItem(key);
+                return data ? JSON.parse(data) : { weight: "", reps: "", done: false };
+            } catch (e) {
+                return { weight: "", reps: "", done: false };
+            }
+        }
+
+        function toggleCheck(dateKey, exIdx, setNum) {
+            const weightVal = document.getElementById(`weight_${dateKey}_${exIdx}_${setNum}`).value;
+            const repsVal = document.getElementById(`reps_${dateKey}_${exIdx}_${setNum}`).value;
+            const btn = event.currentTarget;
+
+            const isDone = !btn.classList.contains("done");
+            if (isDone) {
+                btn.classList.add("done");
+            } else {
+                btn.classList.remove("done");
+            }
+
+            const key = `workout_${dateKey}_${exIdx}_${setNum}`;
+            localStorage.setItem(key, JSON.stringify({
+                weight: weightVal,
+                reps: repsVal,
+                done: isDone
+            }));
+        }
+
+        document.addEventListener("DOMContentLoaded", initApp);
+    </script>
+</body>
+</html>
