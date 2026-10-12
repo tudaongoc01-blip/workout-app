@@ -6,8 +6,8 @@
     <title>Workout Logbook - UL Plan</title>
     
     <!-- Khai báo Icon chuẩn tên file icon.jpg -->
-    <link rel="icon" type="image/jpeg" href="icon.jpg?v=12">
-    <link rel="apple-touch-icon" href="icon.jpg?v=12">
+    <link rel="icon" type="image/jpeg" href="icon.jpg?v=13">
+    <link rel="apple-touch-icon" href="icon.jpg?v=13">
     <link rel="manifest" href="manifest.json">
 
     <style>
@@ -98,46 +98,40 @@
             width: 100%;
         }
 
-        .exercise-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 6px;
-        }
-
         .exercise-title {
             font-size: 1rem;
             font-weight: bold;
             color: var(--accent);
+            margin-bottom: 4px;
             word-break: break-word;
-            flex: 1;
-            padding-right: 8px;
-        }
-
-        .demo-btn {
-            background: #2a2a2a;
-            border: 1px solid var(--accent);
-            color: var(--accent);
-            padding: 4px 8px;
-            border-radius: 6px;
-            font-size: 0.75rem;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            white-space: nowrap;
-            flex-shrink: 0;
-        }
-
-        .demo-btn:active {
-            background: var(--accent);
-            color: #000;
         }
 
         .exercise-meta {
             font-size: 0.8rem;
             color: var(--text-secondary);
+            margin-bottom: 10px;
+        }
+
+        /* Khung hiển thị GIF 3D mô tả động tác */
+        .exercise-img-container {
+            width: 100%;
+            background: #000000;
+            border-radius: 8px;
             margin-bottom: 12px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 160px;
+            border: 1px solid #333;
+        }
+
+        .exercise-img {
+            width: 100%;
+            max-height: 230px;
+            object-fit: contain;
+            display: block;
+            background-color: #000;
         }
 
         .set-row {
@@ -225,36 +219,42 @@
     </div>
 
     <script>
-        // Đường dẫn xem Video/GIF 3D trực tiếp chất lượng cao
-        const DEMO_LINKS = {
-            "BB Bench Press": "https://fitnessprogramer.com/exercise/barbell-bench-press/",
-            "Incline DB Bench Press (Neutral Grip)": "https://fitnessprogramer.com/exercise/incline-dumbbell-press/",
-            "Incline BB Bench Press": "https://fitnessprogramer.com/exercise/incline-barbell-bench-press/",
-            "Butterfly (hoặc DB Flys)": "https://fitnessprogramer.com/exercise/pec-deck-fly/",
-            "Pendlay Row (hoặc Seated Cable Row)": "https://fitnessprogramer.com/exercise/pendlay-row/",
-            "Rowing with DB": "https://fitnessprogramer.com/exercise/dumbbell-row/",
-            "Pull Up (hoặc Lat Pull Down)": "https://fitnessprogramer.com/exercise/pull-up/",
-            "Pull Up": "https://fitnessprogramer.com/exercise/pull-up/",
-            "OHP (Military Press)": "https://fitnessprogramer.com/exercise/overhead-press/",
-            "Bent Over Lateral Raise": "https://fitnessprogramer.com/exercise/bent-over-dumbbell-rear-delt-raise/",
-            "Barbell Curl": "https://fitnessprogramer.com/exercise/barbell-curl/",
-            "DB Curl": "https://fitnessprogramer.com/exercise/dumbbell-curl/",
-            "Close Grip Bench Press (hoặc Dips)": "https://fitnessprogramer.com/exercise/close-grip-bench-press/",
-            "Skull Crusher": "https://fitnessprogramer.com/exercise/lying-triceps-extension/",
-            "DB Shrug": "https://fitnessprogramer.com/exercise/dumbbell-shrug/",
-            "Squat": "https://fitnessprogramer.com/exercise/barbell-squat/",
-            "Leg Press": "https://fitnessprogramer.com/exercise/leg-press/",
-            "Sumo Deadlift (hoặc Conventional DL)": "https://fitnessprogramer.com/exercise/barbell-sumo-deadlift/",
-            "Sumo Deadlift": "https://fitnessprogramer.com/exercise/barbell-sumo-deadlift/",
-            "Stiff Leg Deadlift (hoặc DB RDL)": "https://fitnessprogramer.com/exercise/stiff-leg-deadlift/",
-            "Stiff Leg Deadlift": "https://fitnessprogramer.com/exercise/stiff-leg-deadlift/",
-            "Lunges": "https://fitnessprogramer.com/exercise/dumbbell-lunge/",
-            "Standing Calf Raise": "https://fitnessprogramer.com/exercise/standing-calf-raise/",
-            "Abs 1 (Hanging / Lying Leg Raise)": "https://fitnessprogramer.com/exercise/hanging-leg-raise/",
-            "Abs 1 (Leg Raises)": "https://fitnessprogramer.com/exercise/hanging-leg-raise/",
-            "Abs 2 (Machine / Floor Crunches)": "https://fitnessprogramer.com/exercise/crunch/",
-            "Abs 2 (Crunches)": "https://fitnessprogramer.com/exercise/crunch/"
+        // Danh sách GIF 3D trực tiếp từ FitnessProgramer
+        const FP_GIFS = {
+            "BB Bench Press": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Barbell-Bench-Press.gif",
+            "Incline DB Bench Press (Neutral Grip)": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Incline-Dumbbell-Press.gif",
+            "Incline BB Bench Press": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Incline-Barbell-Bench-Press.gif",
+            "Butterfly (hoặc DB Flys)": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Pec-Deck-Fly.gif",
+            "Pendlay Row (hoặc Seated Cable Row)": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Pendlay-Row.gif",
+            "Rowing with DB": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Row.gif",
+            "Pull Up (hoặc Lat Pull Down)": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Pull-up.gif",
+            "Pull Up": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Pull-up.gif",
+            "OHP (Military Press)": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Barbell-Overhead-Press.gif",
+            "Bent Over Lateral Raise": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Rear-Delt-Fly.gif",
+            "Barbell Curl": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Barbell-Curl.gif",
+            "DB Curl": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Curl.gif",
+            "Close Grip Bench Press (hoặc Dips)": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Close-Grip-Bench-Press.gif",
+            "Skull Crusher": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Lying-Triceps-Extension.gif",
+            "DB Shrug": "https://fitnessprogramer.com/wp-content/uploads/2021/04/Dumbbell-Shrug.gif",
+            "Squat": "https://fitnessprogramer.com/wp-content/uploads/2021/02/BARBELL-SQUAT.gif",
+            "Leg Press": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Leg-Press.gif",
+            "Sumo Deadlift (hoặc Conventional DL)": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Barbell-Sumo-Deadlift.gif",
+            "Sumo Deadlift": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Barbell-Sumo-Deadlift.gif",
+            "Stiff Leg Deadlift (hoặc DB RDL)": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Stiff-Leg-Deadlift.gif",
+            "Stiff Leg Deadlift": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Stiff-Leg-Deadlift.gif",
+            "Lunges": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Lunge.gif",
+            "Standing Calf Raise": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Standing-Calf-Raise.gif",
+            "Abs 1 (Hanging / Lying Leg Raise)": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Hanging-Leg-Raise.gif",
+            "Abs 1 (Leg Raises)": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Hanging-Leg-Raise.gif",
+            "Abs 2 (Machine / Floor Crunches)": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Crunch.gif",
+            "Abs 2 (Crunches)": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Crunch.gif"
         };
+
+        // Chuyển link qua cổng proxy để vượt rào chống nhúng CORS của Safari
+        function getProxyGIFUrl(rawUrl) {
+            if (!rawUrl) return "";
+            return "https://wsrv.nl/?url=" + encodeURIComponent(rawUrl);
+        }
 
         const cycleProgram = [
             {
@@ -414,6 +414,12 @@
             }
         }
 
+        function hideImgContainer(imgElement) {
+            if (imgElement && imgElement.parentNode) {
+                imgElement.parentNode.style.display = 'none';
+            }
+        }
+
         function renderWorkout(dateKey) {
             const container = document.getElementById("workoutContainer");
             if (!container) return;
@@ -447,7 +453,13 @@
                 const card = document.createElement("div");
                 card.className = "exercise-card";
 
-                const demoUrl = DEMO_LINKS[ex.name] || `https://www.youtube.com/results?search_query=${encodeURIComponent(ex.name + ' exercise 3d')}`;
+                const rawUrl = FP_GIFS[ex.name];
+                const gifUrl = getProxyGIFUrl(rawUrl);
+                const imgHTML = gifUrl ? `
+                    <div class="exercise-img-container">
+                        <img class="exercise-img" src="${gifUrl}" alt="${ex.name}" loading="lazy" onerror="hideImgContainer(this)">
+                    </div>
+                ` : '';
 
                 let setsHTML = "";
                 for (let s = 1; s <= ex.sets; s++) {
@@ -465,11 +477,9 @@
                 }
 
                 card.innerHTML = `
-                    <div class="exercise-header">
-                        <div class="exercise-title">${ex.name}</div>
-                        <a href="${demoUrl}" target="_blank" class="demo-btn">🎬 Xem 3D</a>
-                    </div>
+                    <div class="exercise-title">${ex.name}</div>
                     <div class="exercise-meta">${ex.sets} Hiệp chính × Target: ${ex.reps} reps</div>
+                    ${imgHTML}
                     ${setsHTML}
                 `;
                 container.appendChild(card);
