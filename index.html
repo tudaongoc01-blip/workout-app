@@ -179,7 +179,7 @@
 </head>
 <body>
 
-    <h1>Logbook Tập Luyện UL (3 Tháng)</h1>
+    <h1>Logbook Tập Luyện UL</h1>
 
     <!-- Thanh chọn Ngày/Tháng -->
     <div class="day-selector" id="daySelector"></div>
@@ -191,7 +191,7 @@
         <strong>Lưu ý giáo trình:</strong>
         <ul style="padding-left: 18px; margin: 6px 0 0 0;">
             <li>Thời gian nghỉ: Hiệp nặng 5 reps (nghỉ tới khi đủ phục hồi); Hiệp 8-12 reps (nghỉ 1-2 phút)[cite: 9].</li>
-            <li>Chọn mức tạ nặng nhất có thể để đạt số reps chỉ định[cite: 9].</li>
+            <li>Luôn chọn mức tạ nặng nhất có thể để đạt số reps chỉ định[cite: 9].</li>
             <li>Các hiệp warm-up nhẹ không tính vào Working Sets[cite: 9].</li>
         </ul>
     </div>
@@ -278,10 +278,9 @@
             }
         ];
 
-        // Đặt ngày bắt đầu: Thứ 2 ngày 19/10/2026
+        // Đặt ngày bắt đầu: 19/10/2026 (Năm, Tháng-1, Ngày)
         const START_DATE = new Date(2026, 9, 19); 
-        // 3 Tháng = 12 Tuần = 84 Ngày
-        const TOTAL_DAYS = 84; 
+        const TOTAL_DAYS = 84; // 3 tháng = 12 tuần = 84 ngày
 
         let calendarList = [];
         let selectedDateStr = "";
@@ -296,8 +295,7 @@
         function generateCalendar() {
             calendarList = [];
             for (let i = 0; i < TOTAL_DAYS; i++) {
-                const currentDate = new Date(START_DATE);
-                currentDate.setDate(START_DATE.getDate() + i);
+                const currentDate = new Date(START_DATE.getFullYear(), START_DATE.getMonth(), START_DATE.getDate() + i);
 
                 const dateKey = formatDateKey(currentDate);
                 const cycleIndex = i % 7;
@@ -326,7 +324,7 @@
             generateCalendar();
             renderDaySelector();
             renderWorkout(selectedDateStr);
-            scrollToActiveBtn();
+            setTimeout(scrollToActiveBtn, 200);
         }
 
         function renderDaySelector() {
