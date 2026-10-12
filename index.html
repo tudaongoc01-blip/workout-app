@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Workout Logbook - UL Plan</title>
     
-    <!-- Khai báo Icon -->
-    <link rel="icon" type="image/jpeg" href="images.jpg">
-    <link rel="apple-touch-icon" href="images.jpg">
+    <!-- Khai báo Icon khớp tên file icon.jpg -->
+    <link rel="icon" type="image/jpeg" href="icon.jpg?v=3">
+    <link rel="apple-touch-icon" href="icon.jpg?v=3">
     <link rel="manifest" href="manifest.json">
 
     <style>
@@ -278,7 +278,6 @@
             }
         ];
 
-        // Đặt ngày bắt đầu: 19/10/2026
         const START_DATE = new Date(2026, 9, 19); 
         const TOTAL_DAYS = 84;
 
@@ -317,7 +316,6 @@
 
             const todayKey = formatDateKey(new Date());
             const hasToday = calendarList.find(item => item.dateKey === todayKey);
-            // Nếu hôm nay nằm trong lịch thì chọn ngày hôm nay, không thì chọn ngày đầu tiên 19/10/2026
             selectedDateStr = hasToday ? todayKey : calendarList[0].dateKey;
         }
 
