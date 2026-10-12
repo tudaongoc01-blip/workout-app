@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Workout Logbook - UL Plan</title>
     
-    <!-- Khai báo Icon -->
-    <link rel="icon" type="image/jpeg" href="icon.jpg?v=7">
-    <link rel="apple-touch-icon" href="icon.jpg?v=7">
+    <!-- Khai báo Icon chuẩn tên file icon.jpg -->
+    <link rel="icon" type="image/jpeg" href="icon.jpg?v=8">
+    <link rel="apple-touch-icon" href="icon.jpg?v=8">
     <link rel="manifest" href="manifest.json">
 
     <style>
@@ -112,7 +112,7 @@
             margin-bottom: 10px;
         }
 
-        /* Khung hiển thị GIF 3D */
+        /* Khung chứa GIF 3D */
         .exercise-img-container {
             width: 100%;
             background: #000000;
@@ -128,7 +128,7 @@
 
         .exercise-img {
             width: 100%;
-            max-height: 220px;
+            max-height: 230px;
             object-fit: contain;
             display: block;
             background-color: #000;
@@ -219,26 +219,42 @@
     </div>
 
     <script>
-        // Danh sách GIF 3D nguồn mở từ Wikimedia Commons (Không bị chặn)
-        const GIF_3D = {
-            "BB Bench Press": "https://upload.wikimedia.org/wikipedia/commons/b/b8/Bench-press-1.gif",
-            "Incline DB Bench Press (Neutral Grip)": "https://upload.wikimedia.org/wikipedia/commons/5/52/Incline-dumbbell-press-1.gif",
-            "Incline BB Bench Press": "https://upload.wikimedia.org/wikipedia/commons/b/b8/Bench-press-1.gif",
-            "Pendlay Row (hoặc Seated Cable Row)": "https://upload.wikimedia.org/wikipedia/commons/8/87/Bent-over-row-1.gif",
-            "Rowing with DB": "https://upload.wikimedia.org/wikipedia/commons/8/87/Bent-over-row-1.gif",
-            "Pull Up (hoặc Lat Pull Down)": "https://upload.wikimedia.org/wikipedia/commons/a/a2/Pull-up-1.gif",
-            "Pull Up": "https://upload.wikimedia.org/wikipedia/commons/a/a2/Pull-up-1.gif",
-            "OHP (Military Press)": "https://upload.wikimedia.org/wikipedia/commons/d/df/Overhead-press-1.gif",
-            "Barbell Curl": "https://upload.wikimedia.org/wikipedia/commons/0/03/Biceps-curl-1.gif",
-            "DB Curl": "https://upload.wikimedia.org/wikipedia/commons/0/03/Biceps-curl-1.gif",
-            "Squat": "https://upload.wikimedia.org/wikipedia/commons/8/82/Squat-1.gif",
-            "Leg Press": "https://upload.wikimedia.org/wikipedia/commons/3/30/Leg-press-1.gif",
-            "Sumo Deadlift (hoặc Conventional DL)": "https://upload.wikimedia.org/wikipedia/commons/1/18/Deadlift-1.gif",
-            "Sumo Deadlift": "https://upload.wikimedia.org/wikipedia/commons/1/18/Deadlift-1.gif",
-            "Stiff Leg Deadlift (hoặc DB RDL)": "https://upload.wikimedia.org/wikipedia/commons/1/18/Deadlift-1.gif",
-            "Stiff Leg Deadlift": "https://upload.wikimedia.org/wikipedia/commons/1/18/Deadlift-1.gif",
-            "Lunges": "https://upload.wikimedia.org/wikipedia/commons/a/a6/Lunge-1.gif"
+        // Danh sách GIF 3D từ FitnessProgramer
+        const FP_GIFS = {
+            "BB Bench Press": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Barbell-Bench-Press.gif",
+            "Incline DB Bench Press (Neutral Grip)": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Incline-Dumbbell-Press.gif",
+            "Incline BB Bench Press": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Incline-Barbell-Bench-Press.gif",
+            "Butterfly (hoặc DB Flys)": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Pec-Deck-Fly.gif",
+            "Pendlay Row (hoặc Seated Cable Row)": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Pendlay-Row.gif",
+            "Rowing with DB": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Row.gif",
+            "Pull Up (hoặc Lat Pull Down)": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Pull-up.gif",
+            "Pull Up": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Pull-up.gif",
+            "OHP (Military Press)": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Barbell-Overhead-Press.gif",
+            "Bent Over Lateral Raise": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Rear-Delt-Fly.gif",
+            "Barbell Curl": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Barbell-Curl.gif",
+            "DB Curl": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Curl.gif",
+            "Close Grip Bench Press (hoặc Dips)": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Close-Grip-Bench-Press.gif",
+            "Skull Crusher": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Lying-Triceps-Extension.gif",
+            "DB Shrug": "https://fitnessprogramer.com/wp-content/uploads/2021/04/Dumbbell-Shrug.gif",
+            "Squat": "https://fitnessprogramer.com/wp-content/uploads/2021/02/BARBELL-SQUAT.gif",
+            "Leg Press": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Leg-Press.gif",
+            "Sumo Deadlift (hoặc Conventional DL)": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Barbell-Sumo-Deadlift.gif",
+            "Sumo Deadlift": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Barbell-Sumo-Deadlift.gif",
+            "Stiff Leg Deadlift (hoặc DB RDL)": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Stiff-Leg-Deadlift.gif",
+            "Stiff Leg Deadlift": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Stiff-Leg-Deadlift.gif",
+            "Lunges": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Lunge.gif",
+            "Standing Calf Raise": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Standing-Calf-Raise.gif",
+            "Abs 1 (Hanging / Lying Leg Raise)": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Hanging-Leg-Raise.gif",
+            "Abs 1 (Leg Raises)": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Hanging-Leg-Raise.gif",
+            "Abs 2 (Machine / Floor Crunches)": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Crunch.gif",
+            "Abs 2 (Crunches)": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Crunch.gif"
         };
+
+        // Chuyển đường dẫn qua cổng giải mã ảnh để bypass chống nhúng
+        function getProxyGIFUrl(rawUrl) {
+            if (!rawUrl) return "";
+            return "https://wsrv.nl/?url=" + encodeURIComponent(rawUrl);
+        }
 
         const cycleProgram = [
             {
@@ -437,7 +453,8 @@
                 const card = document.createElement("div");
                 card.className = "exercise-card";
 
-                const gifUrl = GIF_3D[ex.name];
+                const rawUrl = FP_GIFS[ex.name];
+                const gifUrl = getProxyGIFUrl(rawUrl);
                 const imgHTML = gifUrl ? `
                     <div class="exercise-img-container">
                         <img class="exercise-img" src="${gifUrl}" alt="${ex.name}" loading="lazy" onerror="hideImgContainer(this)">
