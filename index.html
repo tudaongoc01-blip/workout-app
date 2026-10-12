@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Workout Logbook - UL Plan</title>
     
-    <!-- Khai báo Icon khớp tên file icon.jpg -->
-    <link rel="icon" type="image/jpeg" href="icon.jpg?v=3">
-    <link rel="apple-touch-icon" href="icon.jpg?v=3">
+    <!-- Khai báo Icon chuẩn tên file icon.jpg (Thêm v=4 để xóa Cache Safari) -->
+    <link rel="icon" type="image/jpeg" href="icon.jpg?v=4">
+    <link rel="apple-touch-icon" href="icon.jpg?v=4">
     <link rel="manifest" href="manifest.json">
 
     <style>
@@ -278,6 +278,7 @@
             }
         ];
 
+        // Ngày bắt đầu chương trình: 19/10/2026
         const START_DATE = new Date(2026, 9, 19); 
         const TOTAL_DAYS = 84;
 
@@ -320,9 +321,13 @@
         }
 
         function initApp() {
-            generateCalendar();
-            renderDaySelector();
-            renderWorkout(selectedDateStr);
+            try {
+                generateCalendar();
+                renderDaySelector();
+                renderWorkout(selectedDateStr);
+            } catch (err) {
+                console.error("Init Error:", err);
+            }
         }
 
         function renderDaySelector() {
