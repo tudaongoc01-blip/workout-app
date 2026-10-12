@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Workout Logbook - UL Plan</title>
     
     <!-- Khai báo Icon -->
@@ -20,12 +20,21 @@
             --success: #4caf50;
         }
 
+        * {
+            box-sizing: border-box;
+        }
+
+        html, body {
+            overflow-x: hidden;
+            width: 100%;
+        }
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             background-color: var(--bg-color);
             color: var(--text-primary);
             margin: 0;
-            padding: 16px;
+            padding: 12px;
             padding-bottom: 80px;
         }
 
@@ -33,7 +42,8 @@
             text-align: center;
             font-size: 1.3rem;
             color: var(--accent);
-            margin-bottom: 16px;
+            margin-top: 8px;
+            margin-bottom: 14px;
         }
 
         .day-selector {
@@ -41,20 +51,25 @@
             gap: 8px;
             overflow-x: auto;
             padding-bottom: 8px;
-            margin-bottom: 16px;
+            margin-bottom: 14px;
             -webkit-overflow-scrolling: touch;
+        }
+
+        .day-selector::-webkit-scrollbar {
+            display: none;
         }
 
         .day-btn {
             background: var(--card-bg);
             border: 1px solid #333;
             color: var(--text-secondary);
-            padding: 8px 14px;
-            border-radius: 12px;
+            padding: 8px 12px;
+            border-radius: 10px;
             white-space: nowrap;
             cursor: pointer;
             text-align: center;
-            min-width: 90px;
+            min-width: 80px;
+            flex-shrink: 0;
         }
 
         .day-btn.active {
@@ -65,70 +80,80 @@
         }
 
         .day-btn .day-title {
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             display: block;
         }
 
         .day-btn .day-date {
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             font-weight: bold;
         }
 
         .exercise-card {
             background: var(--card-bg);
             border-radius: 12px;
-            padding: 16px;
-            margin-bottom: 16px;
+            padding: 12px;
+            margin-bottom: 12px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            width: 100%;
         }
 
         .exercise-title {
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: bold;
             color: var(--accent);
             margin-bottom: 4px;
+            word-break: break-word;
         }
 
         .exercise-meta {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: var(--text-secondary);
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
 
+        /* Fix bố cục hàng nhập liệu trên iPhone */
         .set-row {
-            display: grid;
-            grid-template-columns: 50px 1fr 1fr 40px;
-            gap: 8px;
+            display: flex;
+            gap: 6px;
             align-items: center;
             margin-bottom: 8px;
+            width: 100%;
         }
 
         .set-label {
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             color: var(--text-secondary);
+            width: 45px;
+            flex-shrink: 0;
         }
 
         input[type="number"] {
             background: #2a2a2a;
             border: 1px solid #444;
             color: #fff;
-            padding: 8px;
+            padding: 8px 4px;
             border-radius: 6px;
             text-align: center;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
+            flex: 1;
+            min-width: 0; /* Cho phép co giãn linh hoạt */
+            -webkit-appearance: none;
         }
 
         .check-btn {
             background: #333;
             border: none;
             color: #fff;
-            height: 36px;
+            height: 34px;
+            width: 36px;
             border-radius: 6px;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1rem;
+            font-size: 0.9rem;
+            flex-shrink: 0;
         }
 
         .check-btn.done {
@@ -140,14 +165,14 @@
             border-left: 4px solid #2196f3;
             padding: 12px;
             border-radius: 6px;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: #e0e0e0;
             margin-top: 16px;
         }
 
         .rest-day {
             text-align: center;
-            padding: 40px 20px;
+            padding: 40px 16px;
             background: var(--card-bg);
             border-radius: 12px;
         }
@@ -165,7 +190,7 @@
 
     <div class="notes-box">
         <strong>Lưu ý giáo trình:</strong>
-        <ul>
+        <ul style="padding-left: 18px; margin: 6px 0 0 0;">
             <li>Thời gian nghỉ: Các hiệp nặng 5 reps (nghỉ tới khi đủ phục hồi); Các hiệp 8-12 reps (nghỉ 1-2 phút)[cite: 9].</li>
             <li>Luôn chọn mức tạ nặng nhất có thể để đạt số reps chỉ định[cite: 9].</li>
             <li>Các hiệp warm-up nhẹ không tính vào Working Sets[cite: 9].</li>
@@ -173,7 +198,6 @@
     </div>
 
     <script>
-        // Cấu hình giáo trình theo chu kỳ 7 ngày
         const cycleProgram = [
             {
                 dayName: "Thứ 2 - Day 1",
@@ -255,9 +279,8 @@
             }
         ];
 
-        // Ngày bắt đầu: Thứ 2 ngày 12/10/2026
-        const START_DATE = new Date(2026, 9, 12); // Tháng 9 trong Javascript tương ứng tháng 10
-        const TOTAL_DAYS = 28; // Sinh sẵn lịch cho 4 tuần
+        const START_DATE = new Date(2026, 9, 12);
+        const TOTAL_DAYS = 28;
 
         let calendarList = [];
         let selectedDateStr = "";
@@ -276,7 +299,7 @@
                 currentDate.setDate(START_DATE.getDate() + i);
 
                 const dateKey = formatDateKey(currentDate);
-                const cycleIndex = i % 7; // Chu kỳ 7 ngày lặp lại
+                const cycleIndex = i % 7;
                 const programData = cycleProgram[cycleIndex];
 
                 const dayOfWeekNames = ["Chủ Nhật", "Thứ 2", "Thứ 3", "Thứ 4", "Thứ 5", "Thứ 6", "Thứ 7"];
@@ -291,7 +314,6 @@
                 });
             }
 
-            // Mặc định chọn ngày hôm nay nếu nằm trong danh sách, nếu không chọn ngày đầu tiên (12/10)
             const todayKey = formatDateKey(new Date());
             const hasToday = calendarList.find(item => item.dateKey === todayKey);
             selectedDateStr = hasToday ? todayKey : calendarList[0].dateKey;
@@ -335,18 +357,18 @@
             if (program.type === "rest") {
                 container.innerHTML = `
                     <div class="rest-day">
-                        <h2>${dayInfo.displayLabel}</h2>
-                        <h3 style="color: var(--accent);">${program.title}</h3>
-                        <p>${program.message}</p>
+                        <h2 style="font-size: 1.1rem;">${dayInfo.displayLabel}</h2>
+                        <h3 style="color: var(--accent); font-size: 1rem;">${program.title}</h3>
+                        <p style="font-size: 0.9rem;">${program.message}</p>
                     </div>
                 `;
                 return;
             }
 
             const headerHTML = `
-                <div style="margin-bottom: 16px;">
-                    <h2 style="margin: 0; font-size: 1.2rem;">${dayInfo.displayLabel}</h2>
-                    <div style="color: var(--accent); font-weight: bold; font-size: 1rem;">${program.title}</div>
+                <div style="margin-bottom: 12px;">
+                    <h2 style="margin: 0; font-size: 1.1rem;">${dayInfo.displayLabel}</h2>
+                    <div style="color: var(--accent); font-weight: bold; font-size: 0.95rem;">${program.title}</div>
                 </div>
             `;
             container.innerHTML = headerHTML;
@@ -372,7 +394,7 @@
 
                 card.innerHTML = `
                     <div class="exercise-title">${ex.name}</div>
-                    <div class="exercise-meta">${ex.sets} Hiệp chính × Số reps mục tiêu: ${ex.reps}</div>
+                    <div class="exercise-meta">${ex.sets} Hiệp chính × Target: ${ex.reps} reps</div>
                     ${setsHTML}
                 `;
                 container.appendChild(card);
