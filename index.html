@@ -112,26 +112,23 @@
             margin-bottom: 10px;
         }
 
-        /* Khung chứa GIF/Clip động */
+        /* Khung hiển thị hình minh họa bài tập */
         .exercise-img-container {
             width: 100%;
-            background: #2a2a2a;
+            background: #282828;
             border-radius: 8px;
             margin-bottom: 12px;
-            overflow: hidden;
+            padding: 10px;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 160px;
+            border: 1px solid #383838;
         }
 
-        .exercise-img {
+        .exercise-svg {
             width: 100%;
-            max-height: 240px;
-            object-fit: contain;
+            max-height: 120px;
             display: block;
-            border-radius: 8px;
-            background-color: #000;
         }
 
         .set-row {
@@ -219,36 +216,24 @@
     </div>
 
     <script>
-        // Danh sách GIF động minh họa chuyển động từng bài tập
-        const EXERCISE_GIFS = {
-            "BB Bench Press": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Barbell-Bench-Press.gif",
-            "Incline DB Bench Press (Neutral Grip)": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Incline-Dumbbell-Press.gif",
-            "Pendlay Row (hoặc Seated Cable Row)": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Pendlay-Row.gif",
-            "Rowing with DB": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Row.gif",
-            "Pull Up (hoặc Lat Pull Down)": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Pull-up.gif",
-            "Pull Up": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Pull-up.gif",
-            "OHP (Military Press)": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Barbell-Overhead-Press.gif",
-            "Barbell Curl": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Barbell-Curl.gif",
-            "DB Curl": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Curl.gif",
-            "Close Grip Bench Press (hoặc Dips)": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Close-Grip-Bench-Press.gif",
-            "DB Shrug": "https://fitnessprogramer.com/wp-content/uploads/2021/04/Dumbbell-Shrug.gif",
-            "Incline BB Bench Press": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Incline-Barbell-Bench-Press.gif",
-            "Butterfly (hoặc DB Flys)": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Pec-Deck-Fly.gif",
-            "Bent Over Lateral Raise": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Rear-Delt-Fly.gif",
-            "Skull Crusher": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Lying-Triceps-Extension.gif",
-            "Squat": "https://fitnessprogramer.com/wp-content/uploads/2021/02/BARBELL-SQUAT.gif",
-            "Leg Press": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Leg-Press.gif",
-            "Sumo Deadlift (hoặc Conventional DL)": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Barbell-Sumo-Deadlift.gif",
-            "Sumo Deadlift": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Barbell-Sumo-Deadlift.gif",
-            "Stiff Leg Deadlift (hoặc DB RDL)": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Stiff-Leg-Deadlift.gif",
-            "Stiff Leg Deadlift": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Stiff-Leg-Deadlift.gif",
-            "Lunges": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Lunge.gif",
-            "Standing Calf Raise": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Standing-Calf-Raise.gif",
-            "Abs 1 (Hanging / Lying Leg Raise)": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Hanging-Leg-Raise.gif",
-            "Abs 1 (Leg Raises)": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Hanging-Leg-Raise.gif",
-            "Abs 2 (Machine / Floor Crunches)": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Crunch.gif",
-            "Abs 2 (Crunches)": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Crunch.gif"
+        // Sơ đồ SVG tư thế bài tập nhúng trực tiếp (Không lo lỗi mạng/CORS)
+        const SVG_GRAPHICS = {
+            chest_press: `<svg class="exercise-svg" viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="80" rx="6" fill="#1e1e1e"/><path d="M40 55 L160 55" stroke="#ff9800" stroke-width="4"/><rect x="80" y="50" width="40" height="10" rx="3" fill="#ff9800"/><circle cx="100" cy="40" r="8" fill="#fff"/><path d="M100 48 L100 55 M90 55 L110 55" stroke="#fff" stroke-width="3"/><path d="M60 25 L140 25" stroke="#4caf50" stroke-width="5"/><rect x="55" y="18" width="10" height="14" rx="2" fill="#4caf50"/><rect x="135" y="18" width="10" height="14" rx="2" fill="#4caf50"/><text x="100" y="72" font-size="10" fill="#b0b0b0" text-anchor="middle">CHEST PRESS / BENCH PRESS</text></svg>`,
+            pull_row: `<svg class="exercise-svg" viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="80" rx="6" fill="#1e1e1e"/><circle cx="70" cy="25" r="8" fill="#fff"/><path d="M70 33 L85 55 L105 55" stroke="#fff" stroke-width="3" fill="none"/><path d="M100 20 L100 60" stroke="#ff9800" stroke-width="5"/><rect x="95" y="15" width="10" height="12" rx="2" fill="#ff9800"/><rect x="95" y="53" width="10" height="12" rx="2" fill="#ff9800"/><path d="M75 42 L98 42" stroke="#4caf50" stroke-width="3" stroke-dasharray="3,3"/><text x="100" y="72" font-size="10" fill="#b0b0b0" text-anchor="middle">ROW / PULL MOVEMENT</text></svg>`,
+            overhead_press: `<svg class="exercise-svg" viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="80" rx="6" fill="#1e1e1e"/><circle cx="100" cy="30" r="8" fill="#fff"/><path d="M100 38 L100 65 M90 65 L100 50 L110 65" stroke="#fff" stroke-width="3" fill="none"/><path d="M60 15 L140 15" stroke="#ff9800" stroke-width="4"/><rect x="55" y="10" width="10" height="10" fill="#ff9800"/><rect x="135" y="10" width="10" height="10" fill="#ff9800"/><text x="100" y="75" font-size="10" fill="#b0b0b0" text-anchor="middle">OVERHEAD PRESS (OHP)</text></svg>`,
+            squat_leg: `<svg class="exercise-svg" viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="80" rx="6" fill="#1e1e1e"/><circle cx="100" cy="20" r="8" fill="#fff"/><path d="M100 28 L100 45 L85 62 M100 45 L115 62" stroke="#fff" stroke-width="4" fill="none"/><path d="M75 25 L125 25" stroke="#ff9800" stroke-width="5"/><rect x="70" y="18" width="10" height="14" fill="#ff9800"/><rect x="120" y="18" width="10" height="14" fill="#ff9800"/><text x="100" y="75" font-size="10" fill="#b0b0b0" text-anchor="middle">SQUAT / LEG PRESS</text></svg>`,
+            deadlift: `<svg class="exercise-svg" viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="80" rx="6" fill="#1e1e1e"/><path d="M30 62 L170 62" stroke="#555" stroke-width="2"/><circle cx="85" cy="25" r="8" fill="#fff"/><path d="M85 33 L95 50 L95 62 M95 50 L110 62" stroke="#fff" stroke-width="3" fill="none"/><path d="M70 52 L130 52" stroke="#ff9800" stroke-width="4"/><rect x="65" y="44" width="10" height="16" fill="#ff9800"/><rect x="125" y="44" width="10" height="16" fill="#ff9800"/><text x="100" y="75" font-size="10" fill="#b0b0b0" text-anchor="middle">DEADLIFT MOVEMENT</text></svg>`,
+            arm_abs: `<svg class="exercise-svg" viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="80" rx="6" fill="#1e1e1e"/><circle cx="100" cy="25" r="8" fill="#fff"/><path d="M100 33 L100 58 M92 58 L108 58" stroke="#fff" stroke-width="3"/><path d="M100 40 L115 30 L115 22" stroke="#4caf50" stroke-width="3" fill="none"/><circle cx="115" cy="20" r="5" fill="#ff9800"/><text x="100" y="75" font-size="10" fill="#b0b0b0" text-anchor="middle">CURL / TRICEPS / ABS</text></svg>`
         };
+
+        function getExerciseSVG(name) {
+            if (name.includes("Bench") || name.includes("Fly") || name.includes("Butterfly")) return SVG_GRAPHICS.chest_press;
+            if (name.includes("Row") || name.includes("Pull")) return SVG_GRAPHICS.pull_row;
+            if (name.includes("OHP") || name.includes("Press") || name.includes("Raise")) return SVG_GRAPHICS.overhead_press;
+            if (name.includes("Squat") || name.includes("Leg Press") || name.includes("Lunge") || name.includes("Calf")) return SVG_GRAPHICS.squat_leg;
+            if (name.includes("Deadlift")) return SVG_GRAPHICS.deadlift;
+            return SVG_GRAPHICS.arm_abs;
+        }
 
         const cycleProgram = [
             {
@@ -440,12 +425,7 @@
                 const card = document.createElement("div");
                 card.className = "exercise-card";
 
-                const gifUrl = EXERCISE_GIFS[ex.name];
-                const imgHTML = gifUrl ? `
-                    <div class="exercise-img-container">
-                        <img class="exercise-img" src="${gifUrl}" alt="${ex.name}" loading="lazy" onerror="this.parentNode.style.display='none'">
-                    </div>
-                ` : '';
+                const svgGraphics = getExerciseSVG(ex.name);
 
                 let setsHTML = "";
                 for (let s = 1; s <= ex.sets; s++) {
@@ -465,7 +445,7 @@
                 card.innerHTML = `
                     <div class="exercise-title">${ex.name}</div>
                     <div class="exercise-meta">${ex.sets} Hiệp chính × Target: ${ex.reps} reps</div>
-                    ${imgHTML}
+                    <div class="exercise-img-container">${svgGraphics}</div>
                     ${setsHTML}
                 `;
                 container.appendChild(card);
