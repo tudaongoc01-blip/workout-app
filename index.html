@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Workout Logbook - UL Plan</title>
     
-    <!-- Khai báo Icon chuẩn icon.jpg -->
-    <link rel="icon" type="image/jpeg" href="icon.jpg?v=9">
-    <link rel="apple-touch-icon" href="icon.jpg?v=9">
+    <!-- Khai báo Icon chuẩn tên file icon.jpg -->
+    <link rel="icon" type="image/jpeg" href="icon.jpg?v=11">
+    <link rel="apple-touch-icon" href="icon.jpg?v=11">
     <link rel="manifest" href="manifest.json">
 
     <style>
@@ -202,7 +202,10 @@
 
     <h1>Logbook Tập Luyện UL</h1>
 
+    <!-- Thanh chọn Ngày/Tháng -->
     <div class="day-selector" id="daySelector"></div>
+
+    <!-- Nội dung bài tập -->
     <div id="workoutContainer"></div>
 
     <div class="notes-box">
@@ -215,35 +218,35 @@
     </div>
 
     <script>
-        // Đường dẫn file GIF nội bộ đã tải lên thư mục 'gifs' trên GitHub
-        const LOCAL_GIFS = {
-            "BB Bench Press": "gifs/bench_press.gif",
-            "Incline DB Bench Press (Neutral Grip)": "gifs/incline_db.gif",
-            "Incline BB Bench Press": "gifs/incline_bb.gif",
-            "Butterfly (hoặc DB Flys)": "gifs/flys.gif",
-            "Pendlay Row (hoặc Seated Cable Row)": "gifs/pendlay_row.gif",
-            "Rowing with DB": "gifs/db_row.gif",
-            "Pull Up (hoặc Lat Pull Down)": "gifs/pullup.gif",
-            "Pull Up": "gifs/pullup.gif",
-            "OHP (Military Press)": "gifs/ohp.gif",
-            "Bent Over Lateral Raise": "gifs/lateral_raise.gif",
-            "Barbell Curl": "gifs/barbell_curl.gif",
-            "DB Curl": "gifs/db_curl.gif",
-            "Close Grip Bench Press (hoặc Dips)": "gifs/close_bench.gif",
-            "Skull Crusher": "gifs/skull_crusher.gif",
-            "DB Shrug": "gifs/shrug.gif",
-            "Squat": "gifs/squat.gif",
-            "Leg Press": "gifs/leg_press.gif",
-            "Sumo Deadlift (hoặc Conventional DL)": "gifs/sumo_dl.gif",
-            "Sumo Deadlift": "gifs/sumo_dl.gif",
-            "Stiff Leg Deadlift (hoặc DB RDL)": "gifs/stiff_dl.gif",
-            "Stiff Leg Deadlift": "gifs/stiff_dl.gif",
-            "Lunges": "gifs/lunges.gif",
-            "Standing Calf Raise": "gifs/calf_raise.gif",
-            "Abs 1 (Hanging / Lying Leg Raise)": "gifs/leg_raise.gif",
-            "Abs 1 (Leg Raises)": "gifs/leg_raise.gif",
-            "Abs 2 (Machine / Floor Crunches)": "gifs/crunches.gif",
-            "Abs 2 (Crunches)": "gifs/crunches.gif"
+        // Đường dẫn GIF 3D mô phỏng trực tiếp từ các CDN công cộng (không bị chặn CORS)
+        const CDN_GIFS = {
+            "BB Bench Press": "https://upload.wikimedia.org/wikipedia/commons/b/b8/Bench-press-1.gif",
+            "Incline DB Bench Press (Neutral Grip)": "https://upload.wikimedia.org/wikipedia/commons/5/52/Incline-dumbbell-press-1.gif",
+            "Incline BB Bench Press": "https://upload.wikimedia.org/wikipedia/commons/b/b8/Bench-press-1.gif",
+            "Butterfly (hoặc DB Flys)": "https://upload.wikimedia.org/wikipedia/commons/5/52/Incline-dumbbell-press-1.gif",
+            "Pendlay Row (hoặc Seated Cable Row)": "https://upload.wikimedia.org/wikipedia/commons/8/87/Bent-over-row-1.gif",
+            "Rowing with DB": "https://upload.wikimedia.org/wikipedia/commons/8/87/Bent-over-row-1.gif",
+            "Pull Up (hoặc Lat Pull Down)": "https://upload.wikimedia.org/wikipedia/commons/a/a2/Pull-up-1.gif",
+            "Pull Up": "https://upload.wikimedia.org/wikipedia/commons/a/a2/Pull-up-1.gif",
+            "OHP (Military Press)": "https://upload.wikimedia.org/wikipedia/commons/d/df/Overhead-press-1.gif",
+            "Bent Over Lateral Raise": "https://upload.wikimedia.org/wikipedia/commons/d/df/Overhead-press-1.gif",
+            "Barbell Curl": "https://upload.wikimedia.org/wikipedia/commons/0/03/Biceps-curl-1.gif",
+            "DB Curl": "https://upload.wikimedia.org/wikipedia/commons/0/03/Biceps-curl-1.gif",
+            "Close Grip Bench Press (hoặc Dips)": "https://upload.wikimedia.org/wikipedia/commons/b/b8/Bench-press-1.gif",
+            "Skull Crusher": "https://upload.wikimedia.org/wikipedia/commons/0/03/Biceps-curl-1.gif",
+            "DB Shrug": "https://upload.wikimedia.org/wikipedia/commons/d/df/Overhead-press-1.gif",
+            "Squat": "https://upload.wikimedia.org/wikipedia/commons/8/82/Squat-1.gif",
+            "Leg Press": "https://upload.wikimedia.org/wikipedia/commons/3/30/Leg-press-1.gif",
+            "Sumo Deadlift (hoặc Conventional DL)": "https://upload.wikimedia.org/wikipedia/commons/1/18/Deadlift-1.gif",
+            "Sumo Deadlift": "https://upload.wikimedia.org/wikipedia/commons/1/18/Deadlift-1.gif",
+            "Stiff Leg Deadlift (hoặc DB RDL)": "https://upload.wikimedia.org/wikipedia/commons/1/18/Deadlift-1.gif",
+            "Stiff Leg Deadlift": "https://upload.wikimedia.org/wikipedia/commons/1/18/Deadlift-1.gif",
+            "Lunges": "https://upload.wikimedia.org/wikipedia/commons/a/a6/Lunge-1.gif",
+            "Standing Calf Raise": "https://upload.wikimedia.org/wikipedia/commons/8/82/Squat-1.gif",
+            "Abs 1 (Hanging / Lying Leg Raise)": "https://upload.wikimedia.org/wikipedia/commons/a/a2/Pull-up-1.gif",
+            "Abs 1 (Leg Raises)": "https://upload.wikimedia.org/wikipedia/commons/a/a2/Pull-up-1.gif",
+            "Abs 2 (Machine / Floor Crunches)": "https://upload.wikimedia.org/wikipedia/commons/a/a2/Pull-up-1.gif",
+            "Abs 2 (Crunches)": "https://upload.wikimedia.org/wikipedia/commons/a/a2/Pull-up-1.gif"
         };
 
         const cycleProgram = [
@@ -443,11 +446,10 @@
                 const card = document.createElement("div");
                 card.className = "exercise-card";
 
-                const gifPath = LOCAL_GIFS[ex.name];
-                // Tự động ẩn khung chứa nếu chưa upload file GIF đó để không vỡ giao diện
-                const imgHTML = gifPath ? `
+                const gifUrl = CDN_GIFS[ex.name];
+                const imgHTML = gifUrl ? `
                     <div class="exercise-img-container">
-                        <img class="exercise-img" src="${gifPath}" alt="${ex.name}" loading="lazy" onerror="hideImgContainer(this)">
+                        <img class="exercise-img" src="${gifUrl}" alt="${ex.name}" loading="lazy" onerror="hideImgContainer(this)">
                     </div>
                 ` : '';
 
