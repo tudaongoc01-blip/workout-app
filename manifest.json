@@ -1,0 +1,15 @@
+{
+  "short_name": "UL Workout",
+  "name": "Upper Lower Workout Tracker",
+  "start_url": "./index.html",
+  "background_color": "#121212",
+  "theme_color": "#ff9800",
+  "display": "standalone",
+  "icons": [
+    {
+      "src": "images.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg"
+    }
+  ]
+}
