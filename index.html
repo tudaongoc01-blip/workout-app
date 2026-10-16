@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Workout Logbook - UL Plan</title>
     
-    <link rel="icon" type="image/jpeg" href="icon.jpg?v=25">
-    <link rel="apple-touch-icon" href="icon.jpg?v=25">
+    <link rel="icon" type="image/jpeg" href="icon.jpg?v=26">
+    <link rel="apple-touch-icon" href="icon.jpg?v=26">
 
     <style>
         :root {
@@ -248,10 +248,11 @@
             font-size: 0.75rem;
         }
         .key-input-box button {
-            background: #444;
+            background: var(--accent);
             border: none;
-            color: #fff;
-            padding: 6px 10px;
+            color: #000;
+            font-weight: bold;
+            padding: 6px 12px;
             border-radius: 6px;
             font-size: 0.75rem;
             cursor: pointer;
@@ -348,12 +349,12 @@
             </div>
             
             <div class="key-input-box">
-                <input type="password" id="groqKeyInput" placeholder="Dán Groq API Key vào đây (lưu trên máy)...">
+                <input type="password" id="groqKeyInput" placeholder="Dán Groq Key (gsk_...) vào đây...">
                 <button onclick="saveGroqKey()">Lưu Key</button>
             </div>
 
             <div class="chat-body" id="chatBody">
-                <div class="msg ai">Xin chào! Nhập câu hỏi bên dưới để trao đổi cùng Trợ lý Gym AI nhé.</div>
+                <div class="msg ai">Xin chào! Nhập Groq Key mới ở trên rồi bấm Lưu Key, sau đó gửi câu hỏi ở bên dưới nhé.</div>
             </div>
 
             <div class="chat-input-area">
@@ -672,7 +673,7 @@
             const val = document.getElementById("groqKeyInput").value.trim();
             if (val) {
                 localStorage.setItem("user_groq_key", val);
-                alert("Đã lưu API Key thành công trên máy của bạn!");
+                alert("Đã lưu Groq API Key thành công!");
             } else {
                 localStorage.removeItem("user_groq_key");
                 alert("Đã xóa Key.");
@@ -702,7 +703,7 @@
             chatBody.scrollTop = chatBody.scrollHeight;
 
             if (!userKey) {
-                loadingMsg.innerText = "Vui lòng nhập và Lưu Groq API Key ở ô phía trên để bắt đầu trò chuyện với AI!";
+                loadingMsg.innerText = "Vui lòng dán Groq API Key (gsk_...) vào ô trên rồi chọn 'Lưu Key' trước khi nhắn nhé!";
                 return;
             }
 
@@ -730,10 +731,10 @@
                 });
 
                 const data = await response.json();
-                const aiReply = data.choices?.[0]?.message?.content || "Không nhận được phản hồi từ AI. Kiểm tra lại Key.";
+                const aiReply = data.choices?.[0]?.message?.content || "Lỗi: Key không hợp lệ hoặc hết hạn.";
                 loadingMsg.innerText = aiReply;
             } catch (err) {
-                loadingMsg.innerText = "Không thể kết nối. Kiểm tra lại mạng hoặc API Key.";
+                loadingMsg.innerText = "Không thể kết nối. Vui lòng kiểm tra lại mạng hoặc Key.";
             }
             chatBody.scrollTop = chatBody.scrollHeight;
         }
